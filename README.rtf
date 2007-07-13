@@ -1,0 +1,160 @@
+{\rtf1\mac\ansicpg10000\cocoartf824\cocoasubrtf420
+{\fonttbl\f0\fswiss\fcharset77 Helvetica-Bold;\f1\fswiss\fcharset77 Helvetica;\f2\fswiss\fcharset77 Helvetica-Oblique;
+\f3\fswiss\fcharset77 Helvetica-BoldOblique;\f4\fnil\fcharset77 Monaco;}
+{\colortbl;\red255\green255\blue255;\red35\green110\blue37;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww9000\viewh8400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qc\pardirnatural
+
+\f0\b\fs24 \cf0 AAPR : AES Archive Password Recovery ver 0.01\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\b0 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f0\b\fs28 \cf0 Introduction
+\f1\b0\fs24 \
+\
+AAPR will aim at being a password recovery utility for RAR and ZIP files encrypted using the AES encryption scheme. However, in its first release, it only support AES encrypted RAR (i.e. RAR v3+), that have encrypted file names. If you try to open a RAR file in Winrar and it does not ask you straightaway for a password and you can see the names of the encrypted files, this utility cannot help you, yet. \
+\
+Because there is no known flaws in AES, the only way to go about finding out a password is to try until you find the right one and with AES it can takes a long times.\
+\
+AAPR ver 0.01 is a single threaded application and depending on the speed of your processor, should be able to test between 10 and 20 passwords a seconds, on a modern computer : if the password is not weak, it's going to take a long long time.\
+\
+AAPR should works on most POSIX compliant OS (Unix, Linux, Mac OS X) and windows. Binaries are provided for Windows and Mac OSX. You can compile the utility yourself just by typing 'make'.\
+\
+
+\f0\b\fs28 The brute-force Attack\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\b0\fs24 \cf0 \
+You can try to find a password by trying all the passwords combinations made up of a specific character set. If you don't know anything about the password, that would likely be at least the alphabetical lower-case characters and the numbers. \
+\
+To do that you must first, create a text file that contains the characters you want to include in you character set :\
+	open a text editor.\
+	write all the characters you want on the first line.\
+	save it.\
+ex :\
+	
+\f2\i charset.txt :
+\f1\i0 \
+	abcdefghijklmnopqrstuvwxyz1234567890\
+\
+Then launch aapr with the following command :\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f3\i\b \cf0 aapr -mb <charset filename> -p 7 <encryted rar filename>
+\f1\i0\b0 \
+\
+-p 7 means that AAPR will try all passwords up to 7 characters in length.\
+\
+The brute-force attack method allows you to form password with character string instead of single characters. This is useful when you suspect that a password is combined of known elements but don't know which. \
+\
+To use that feature, just create a file containing each elements on a new line :\
+\
+ex :\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f2\i \cf0 	string_set.txt:\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\i0 \cf0 	word1\
+	word2\
+	word3\
+	...\
+\
+Type the same command :
+\f2\i  
+\f3\b aapr -mb <charset filename> -p 7 <encryted rar filename>
+\f2\b0 \
+
+\f1\i0 Here -p7 means that it will try all the passwords formed with the concatenation of the words in the <charset_filename> up to 7 elements.\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f0\b\fs28 \cf0 The dictionary attack :\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\b0\fs24 \cf0 With this simple method, you need to use a text file containing a list of words (one per line), and the software will try each word as a potential password until the list ends.\
+\
+This is a useful method to try to find weak password in a limited time : you should be able to test half-a-million words in about 12 hours.\
+\
+To launch such an attack :  
+\f3\i\b aapr -md <dictionary filename>  <encryted rar filename>\
+
+\f1\i0\b0 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qc\pardirnatural
+
+\f0\b\fs28 \cf0 Other Features :\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qc\pardirnatural
+
+\fs24 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\fs26 \cf0 Automatic Progression Saving :\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\b0\fs24 \cf0 By default AAPR will save its progression every 1500 tests by writing to a .crk file with the same name as the archive. This allows you to stop AAPR at any time and be able to start it again later. \
+\
+To restart a previously started job type : aapr -c <encrypted rar filename>\
+\
+You can specify your own saving interval with the -t options.\
+ex : 
+\f3\i\b aapr -md <dictionary filename> -t 2000 <encryted rar filename>
+\f1\i0\b0 \
+This will save every 2000 tries instead of the 1500 default.\
+\
+Warning : if you want to change the settings on a previously launched decryption attempt, you need to delete de .crk file associated with the archive you are looking to decrypt. Otherwise, it will just continue the previous attack. \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f0\b\fs26 \cf0 Benchmark :\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\b0\fs24 \cf0 If you want an idea of how long a particular job will take, you can use the benchmark feature. Type all the options like you would to start the actual job but add the options -b followed by a limit of password to try.\
+\
+ex : 
+\f3\i\b aapr -md <dictionary filename> -b 1000 <encryted rar filename>
+\f1\i0\b0 \
+\
+AAPR will then stop after 1000 try and tell you how fast things are going. \
+\
+Note : if you specified more than the saving limit, don't forget to delete the .crk file to start the real calculation.\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f0\b\fs26 \cf0 Index Range :\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\b0\fs24 \cf0 You can start at any point in the password space you are trying. \
+If you are trying to find a password with a character set of 10 characters and with a maximum length of 5, there are 66429 possible password.\
+\
+You can tell AAPR to start looking a the #-th password and stopped at the #-th password in the list of possible passwords using the -i option. \
+\
+ex:  
+\f3\i\b aapr -md <dictionary filename> -i 3000 5000 <encryted rar filename>
+\f1\i0\b0 \
+AAPR will only try passwords between the 3000th and 5000th words in the dictionary list.\
+\
+This feature is useful if you want to split the work load on several computers to speed things up. You could also use it to launch 2 instances of AAPR on the same machine in case you have a multi-core/processor machine as AAPR is at present single threaded. Finally this is also how the resuming from previously started job works : AAPR save the current index in the .crk file with the others settings.\
+\
+Note : you can find out the number of possible passwords with you chosen settings using the benchmark feature to find out how to split the work.\
+\
+Note : when launching several instance of the application, note that you don't need to copy the full RAR file several times : the utility only uses the first few thousands byte of the Rar files so you can use a hexadecimal editors to copy just the beginning of the file instead of having multiple copies.\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f0\b\fs26 \cf0 Test function \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\qj\pardirnatural
+
+\f1\b0\fs24 \cf0 Finally there is  a hidden testing function to check that the utility is working properly on your computer : type aapr -?\
+If an error message comes up, please send me a mail at glachesis at users.sourceforge.net\
+\
+\
+
+\f0\b Remember that any passwords that is long enough and not present in a dictionary will not be found in a reasonable time with this utility and there is nothing that can be done.
+\f1\b0 \
+\
+\pard\tx480\tx960\tx1440\tx1920\tx2400\tx2880\tx3360\tx3840\tx4320\tx4800\tx5280\tx5760\tx6240\tx6720\tx7200\tx7680\tx8160\tx8640\tx9120\tx9600\tx10080\tx10560\tx11040\tx11520\tx12000\tx12480\tx12960\tx13440\tx13920\tx14400\tx14880\tx15360\tx15840\tx16320\tx16800\tx17280\tx17760\tx18240\tx18720\tx19200\tx19680\tx20160\tx20640\tx21120\tx21600\tx22080\tx22560\tx23040\tx23520\tx24000\tx24480\tx24960\tx25440\tx25920\tx26400\tx26880\tx27360\tx27840\tx28320\tx28800\tx29280\tx29760\tx30240\tx30720\tx31200\tx31680\tx32160\tx32640\tx33120\tx33600\tx34080\tx34560\tx35040\tx35520\tx36000\tx36480\tx36960\tx37440\tx37920\tx38400\tx38880\tx39360\tx39840\tx40320\tx40800\tx41280\tx41760\tx42240\tx42720\tx43200\tx43680\tx44160\tx44640\tx45120\tx45600\tx46080\tx46560\tx47040\tx47520\tx48000\ql\qnatural\pardirnatural
+
+\f4\fs20 \cf2 \CocoaLigature0  *   Copyright (C) 2007 Guillaume Michalag.}
